@@ -32,7 +32,7 @@ get-debloated-pkgs --add-common --prefer-nano
 #pacman -Q "$package" | awk '{print $2; exit}' > ~/version
 
 if [ "${DEVEL_RELEASE-}" = 1 ]; then
-cat <<EOM > "PKGBUILD"
+cat <<'EOM' > "PKGBUILD"
 pkgname=openloco-git
 pkgver=25.11.r108.gad4f7c42a
 pkgrel=1
@@ -96,7 +96,7 @@ EOM
 make-aur-package
 pacman -Q "openloco-git" | awk '{print $2; exit}' > ~/version
 else
-cat <<EOM > "PKGBUILD"
+cat <<'EOM' > "PKGBUILD"
 pkgname=openloco
 pkgver=25.12
 pkgrel=1
