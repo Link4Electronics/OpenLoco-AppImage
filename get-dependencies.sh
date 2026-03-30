@@ -6,7 +6,14 @@ ARCH=$(uname -m)
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
+pacman -Syu --noconfirm \
+	cmake 	 \
+	fmt		 \
+	gtest 	 \
+	libdecor \
+	openal 	 \
+	sdl2 	 \
+	yaml-cpp
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
