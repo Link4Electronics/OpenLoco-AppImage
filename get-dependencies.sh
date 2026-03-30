@@ -37,7 +37,7 @@ pkgname=openloco-git
 pkgver=25.11.r108.gad4f7c42a
 pkgrel=1
 pkgdesc="An open source re-implementation of Chris Sawyer's Locomotion"
-arch=(x86_64)
+arch=(x86_64 aarch64)
 url="https://github.com/OpenLoco/OpenLoco"
 license=(MIT)
 depends=(sdl2 libpng openal)
@@ -45,10 +45,8 @@ makedepends=(cmake yaml-cpp git gtest fmt)
 provides=(openloco)
 conflicts=(openloco)
 options=(lto !debug)
-source=("git+https://github.com/OpenLoco/OpenLoco.git"
-        "openloco.desktop")
-sha256sums=('SKIP'
-            '57512f00144c1e0d2cc91c3adbf38460d5ec1223afc27bd16e1271760bce02ae')
+source=("git+https://github.com/OpenLoco/OpenLoco.git")
+sha256sums=('SKIP')
 pkgver() {
   cd OpenLoco
   git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
@@ -56,9 +54,7 @@ pkgver() {
 build() {
 	local _flags=(
     -DFETCHCONTENT_QUIET:BOOL=OFF \
-    -DCMAKE_SYSTEM_PROCESSOR=x86_64 \
     -DOPENLOCO_BUILD_TESTS=OFF \
-    -DCMAKE_LIBRARY_ARCHITECTURE=x86_64 \
     -DCMAKE_CXX_FLAGS="-Wno-error" \
 	)
   cd "${srcdir}/OpenLoco"
@@ -75,7 +71,6 @@ build() {
   cmake --build build
 }
 package() {
-  install -Dm644 "openloco.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x16.png" "$pkgdir/usr/share/icons/hicolor/16x16/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x32.png" "$pkgdir/usr/share/icons/hicolor/32x32/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x64.png" "$pkgdir/usr/share/icons/hicolor/64x64/apps/openloco.png"
@@ -101,23 +96,18 @@ pkgname=openloco
 pkgver=25.12
 pkgrel=1
 pkgdesc="An open source re-implementation of Chris Sawyer's Locomotion"
-arch=(x86_64)
+arch=(x86_64 aarch64)
 url="https://github.com/OpenLoco/OpenLoco"
 license=(MIT)
 depends=(sdl2 libpng openal)
 makedepends=(cmake yaml-cpp gtest fmt git)
 options=(lto !debug)
-source=("${pkgname}-${pkgver}.tar.gz::https://github.com/OpenLoco/OpenLoco/archive/refs/tags/v${pkgver}.tar.gz"
-    "openloco.desktop")
-sha256sums=(
-            '11e06a365c083940665cfeaa0c367686b9171733cd05bb7692222226b74a716e'
-            '57512f00144c1e0d2cc91c3adbf38460d5ec1223afc27bd16e1271760bce02ae')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/OpenLoco/OpenLoco/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('11e06a365c083940665cfeaa0c367686b9171733cd05bb7692222226b74a716e')
 build() {
   local _flags=(
     -DFETCHCONTENT_QUIET:BOOL=OFF
-    -DCMAKE_SYSTEM_PROCESSOR=x86_64
     -DOPENLOCO_BUILD_TESTS=OFF
-    -DCMAKE_LIBRARY_ARCHITECTURE=x86_64
     -DCMAKE_CXX_FLAGS="-Wno-error"
   )
   cd "${srcdir}/OpenLoco-${pkgver}"
@@ -134,7 +124,6 @@ build() {
   cmake --build build
 }
 package() {
-  install -Dm644 "openloco.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
   install -Dm644 "${srcdir}/OpenLoco-${pkgver}/src/Resources/src/logo/icon_x16.png" "$pkgdir/usr/share/icons/hicolor/16x16/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco-${pkgver}/src/Resources/src/logo/icon_x32.png" "$pkgdir/usr/share/icons/hicolor/32x32/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco-${pkgver}/src/Resources/src/logo/icon_x64.png" "$pkgdir/usr/share/icons/hicolor/64x64/apps/openloco.png"
