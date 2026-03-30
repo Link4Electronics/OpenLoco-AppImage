@@ -9,7 +9,6 @@ echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
 	cmake 	 \
 	fmt		 \
-	gtest 	 \
 	libdecor \
 	openal 	 \
 	sdl2 	 \
