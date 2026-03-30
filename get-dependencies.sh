@@ -143,3 +143,6 @@ EOM
 make-aur-package
 pacman -Q "openloco" | awk '{print $2; exit}' > ~/version
 fi
+
+mkdir -p ./AppDir/bin
+mv -v /usr/share/data ./AppDir/bin
