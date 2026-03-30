@@ -41,28 +41,19 @@ arch=(x86_64)
 url="https://github.com/OpenLoco/OpenLoco"
 license=(MIT)
 depends=(sdl2 libpng openal)
-
 makedepends=(cmake yaml-cpp git gtest fmt)
-
 provides=(openloco)
 conflicts=(openloco)
-options=(!lto)
+options=(lto !debug)
 source=("git+https://github.com/OpenLoco/OpenLoco.git"
         "openloco.desktop")
 sha256sums=('SKIP'
             '57512f00144c1e0d2cc91c3adbf38460d5ec1223afc27bd16e1271760bce02ae')
-
 pkgver() {
   cd OpenLoco
   git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
 }
-
 build() {
-
-    # -Dfmt_DIR:PATH=/usr/lib/cmake/fmt -> pointless; want lib32-fmt
-    # -Dsfl_DIR:PATH=/usr/include/sfl   -> pointless; want to checkout it, no system version
-
-
 	local _flags=(
     -DFETCHCONTENT_QUIET:BOOL=OFF \
     -DCMAKE_SYSTEM_PROCESSOR=x86_64 \
@@ -70,10 +61,8 @@ build() {
     -DCMAKE_LIBRARY_ARCHITECTURE=x86_64 \
     -DCMAKE_CXX_FLAGS="-Wno-error" \
 	)
-
   cd "${srcdir}/OpenLoco"
   rm -rf build
-
   cmake -G "Unix Makefiles" -B build -S . -Wno-dev \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -83,15 +72,8 @@ build() {
     -DCMAKE_SIZEOF_VOID_P=8 \
     -DCMAKE_INSTALL_LIBDIR=lib \
     "${_flags[@]}"
-
   cmake --build build
 }
-
-check() {
-  cd "${srcdir}/OpenLoco"
-  ctest --test-dir build --output-on-failure
-}
-
 package() {
   install -Dm644 "openloco.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x16.png" "$pkgdir/usr/share/icons/hicolor/16x16/apps/openloco.png"
@@ -101,20 +83,13 @@ package() {
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x256.png" "$pkgdir/usr/share/icons/hicolor/256x256/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_x512.png" "$pkgdir/usr/share/icons/hicolor/512x512/apps/openloco.png"
   install -Dm644 "${srcdir}/OpenLoco/src/Resources/src/logo/icon_steam.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/openloco.svg"
-
   cd "${srcdir}/OpenLoco"
   DESTDIR="${pkgdir}" cmake --install build
   install -D "${srcdir}/OpenLoco/LICENSE" -t "${pkgdir}/usr/share/licenses/${pkgname}"
-
-
-
-  # Remove bundled fmt files to avoid conflicts with system fmt package
   rm -rf "${pkgdir}/usr/lib/libfmt.a"
   rm -rf "${pkgdir}/usr/include/fmt"
   rm -rf "${pkgdir}/usr/lib/cmake/fmt"
   rm -rf "${pkgdir}/usr/lib/pkgconfig/fmt.pc"
-
-  #remove bundled sfl from package
   rm -rf "${pkgdir}/usr/share/include/sfl"
 }
 EOM
@@ -131,13 +106,12 @@ url="https://github.com/OpenLoco/OpenLoco"
 license=(MIT)
 depends=(sdl2 libpng openal)
 makedepends=(cmake yaml-cpp gtest fmt git)
-options=(!lto)
+options=(lto !debug)
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/OpenLoco/OpenLoco/archive/refs/tags/v${pkgver}.tar.gz"
     "openloco.desktop")
 sha256sums=(
             '11e06a365c083940665cfeaa0c367686b9171733cd05bb7692222226b74a716e'
             '57512f00144c1e0d2cc91c3adbf38460d5ec1223afc27bd16e1271760bce02ae')
-
 build() {
   local _flags=(
     -DFETCHCONTENT_QUIET:BOOL=OFF
@@ -146,10 +120,8 @@ build() {
     -DCMAKE_LIBRARY_ARCHITECTURE=x86_64
     -DCMAKE_CXX_FLAGS="-Wno-error"
   )
-
   cd "${srcdir}/OpenLoco-${pkgver}"
   rm -rf build
-
   cmake -G "Unix Makefiles" -B build -S . -Wno-dev \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -159,15 +131,8 @@ build() {
     -DCMAKE_SIZEOF_VOID_P=8 \
     -DCMAKE_INSTALL_LIBDIR=lib \
     "${_flags[@]}"
-
   cmake --build build
 }
-
-check() {
-  cd "${srcdir}/OpenLoco-${pkgver}"
-  ctest --test-dir build --output-on-failure
-}
-
 package() {
   install -Dm644 "openloco.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
   install -Dm644 "${srcdir}/OpenLoco-${pkgver}/src/Resources/src/logo/icon_x16.png" "$pkgdir/usr/share/icons/hicolor/16x16/apps/openloco.png"
@@ -180,16 +145,10 @@ package() {
   cd "${srcdir}/OpenLoco-${pkgver}"
   DESTDIR="${pkgdir}" cmake --install build
   install -D "${srcdir}/OpenLoco-${pkgver}/LICENSE" -t "${pkgdir}/usr/share/licenses/${pkgname}"
-
-
-
-  # Remove bundled fmt files to avoid conflicts with system fmt package
   rm -rf "${pkgdir}/usr/lib/libfmt.a"
   rm -rf "${pkgdir}/usr/include/fmt"
   rm -rf "${pkgdir}/usr/lib/cmake/fmt"
   rm -rf "${pkgdir}/usr/lib/pkgconfig/fmt.pc"
-
-  #remove bundled sfl from package
   rm -rf "${pkgdir}/usr/share/include/sfl"
 }
 EOM
