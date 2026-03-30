@@ -11,7 +11,7 @@ export ICON=/usr/share/icons/hicolor/256x256/apps/openloco.png
 export DEPLOY_OPENGL=1
 
 # Deploy dependencies
-quick-sharun /usr/bin/OpenLoco /usr/share/data
+quick-sharun /usr/bin/OpenLoco /usr/share/data/*
 
 # Additional changes can be done in between here
 
