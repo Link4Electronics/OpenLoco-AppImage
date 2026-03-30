@@ -33,7 +33,7 @@ get-debloated-pkgs --add-common --prefer-nano
 if [ "${DEVEL_RELEASE-}" = 1 ]; then
 cat <<'EOM' > "PKGBUILD"
 pkgname=openloco-git
-pkgver=25.11.r108.gad4f7c42a
+pkgver=26.02.r13.g033022c0f
 pkgrel=1
 pkgdesc="An open source re-implementation of Chris Sawyer's Locomotion"
 arch=(x86_64 aarch64)
